@@ -19,8 +19,8 @@ categories = ['Work','Hobbies','Health','Bills']            #This creates the li
 cat_label = tk.Label(root, text='Category: ')               #Name of the field on teh second row
 cat_label.grid(row=1,column=0, sticky=tk.E + tk.W, padx=5, pady=5)
 
-cat_inp = tk.Listbox(root, height=2)                                #The grid on the right of the label (Categories: ), this is a Listbox, not tk.Entry like previous
-                                                                    #height=2 shows two rows at a time
+cat_inp = tk.Listbox(root, height=1)                                #The grid on the right of the label (Categories: ), this is a Listbox, not tk.Entry like previous
+                                                                    #height=1 show one row at a time
 cat_inp.grid(row=1,column=1, sticky=tk.E + tk.W, padx=5,pady=5)     #The list box is left of the label (Categories: )
 
 for category in categories:                                 #Create a loop to run through the options within the categories list.
@@ -31,6 +31,27 @@ message_inp.grid(row=2,column=0,columnspan=2, sticky='nesw')  # sticky on four s
 
 save_btn = tk.Button(root, text='Save')                         #Create a save button with tk.Button
 save_btn.grid(row=3,column=1, sticky=tk.E, ipadx=5, ipady=5)    #sticky=tk.E means put this on the right side
+
+status_bar=tk.Label(root, text='')
+status_bar.grid(row=100, column=0, columnspan=2, ipadx=5, ipady=5)
+
+def save():
+    subject = subject_inp.get()
+    selected = cat_inp.curselection()
+    if not selected:
+        category = 'Misc'
+    else:
+        category = categories[selected[0]]
+
+    message = message_inp.get('1.0',tk.END)
+
+    filename = f'{category}-{subject}.txt'
+    with open(filename,'w') as fh:
+        fh.write(message)
+
+    status_bar.configure(text='File saved')
+
+save_btn.configure(command=save)
 
 root.mainloop()  #This is always the last line that triggers an event
 
